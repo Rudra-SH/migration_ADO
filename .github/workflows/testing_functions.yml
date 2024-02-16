@@ -4,7 +4,7 @@ on:
   push:
 
 jobs:
-  get-latest-release:
+  for-testing-functions:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -28,8 +28,12 @@ jobs:
           function multiplyNumbers(a, b) {
               return a * b;
           }
+
+          functions addNumbers(a, b) {
+            return a + b;
+          }
           
           // Example usage:
-          const result = multiplyNumbers(5, 10);
-          console.log(result); // Output: 50
+          const result = addNumbers(multiplyNumbers(2,3),7);
+          console.log(result); // Output: 13
 
