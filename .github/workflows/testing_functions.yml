@@ -1,7 +1,7 @@
-name: Bulk Migration Script
+name: For testing Functions
 
 on:
-  push:
+  workflow_dispatch:
 
 jobs:
   for-testing-functions:
