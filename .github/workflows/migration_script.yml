@@ -1,4 +1,4 @@
-name: Get Latest Release
+name: Bulk Migration Script
 
 on:
   workflow_dispatch:
