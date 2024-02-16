@@ -33,6 +33,7 @@ jobs:
           const workbook = XLSX.readFile('./data/DummyDataToTestADOMigration.xlsx');
           const sheetName = workbook.SheetNames[0];
           const worksheet = workbook.Sheets[sheetName];
+          const failedRepos = [];
 
           // Convert Excel to JSON
           const excelData = XLSX.utils.sheet_to_json(worksheet);
