@@ -47,7 +47,7 @@ jobs:
             console.log(`Cloning repository: ${cloneUrl}`);
             // You can use any suitable method to clone the repository, like git clone or actions/checkout
             // For example:
-            execSync(`git clone ${cloneUrl}`);
+            run(`git clone ${cloneUrl}`);
             // OR
             // execSync(`git clone --depth=1 --branch=main ${cloneUrl}`);
             // OR
