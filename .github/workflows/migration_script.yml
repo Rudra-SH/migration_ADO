@@ -1,0 +1,26 @@
+name: Get Latest Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  get-latest-release:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '14'
+
+    - name: Install dependencies
+      run: npm install @actions/github
+
+    - name: Migrate Bulk repos
+      uses: actions/github-script@v6
+      with:
+        script: |
+         // Script for migration all repos form ADO to Github mentioned in excel File.
+         
