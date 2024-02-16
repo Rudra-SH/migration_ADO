@@ -50,7 +50,7 @@ jobs:
               execSync(`git clone ${cloneUrl}`);
             } catch (error) {
               console.error(`Failed to clone repository: ${project}/${repo}`);
-              failedRepos.push([ project, repo, error.message]);
+              failedRepos.push([`'${project}'`, `'${repo}'`, `'${error.message}'`]);
             }
           }
 
