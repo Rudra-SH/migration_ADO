@@ -16,11 +16,23 @@ jobs:
         node-version: '14'
 
     - name: Install dependencies
-      run: npm install @actions/github
+      run: | 
+        npm install @actions/github
+        npm install xlsx
 
     - name: Migrate Bulk repos
       uses: actions/github-script@v6
       with:
         script: |
          // Script for migration all repos form ADO to Github mentioned in excel File.
-         
+         const XLSX = require('xlsx');
+         const fs = require('fs');
+
+         // Load Excel file
+         const workbook = XLSX.readFile('./data/DummyDataToTestADOMigration.xlsx');
+         const sheetName = workbook.SheetNames[0];
+         const worksheet = workbook.Sheets[sheetName];
+
+         // Convert Excel to JSON
+         const jsonData = XLSX.utils.sheet_to_json(worksheet);
+         console.log(jsonData);
