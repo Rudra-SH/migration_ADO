@@ -1,0 +1,35 @@
+name: Bulk Migration Script
+
+on:
+  push:
+
+jobs:
+  get-latest-release:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '14'
+
+    - name: Install dependencies
+      run: | 
+        npm install @actions/github
+        npm install xlsx
+
+    - name: Migrate Bulk repos
+      uses: actions/github-script@v6
+      with:
+        script: |
+          // Script for testing functions in javascript
+          function multiplyNumbers(a, b) {
+              return a * b;
+          }
+          
+          // Example usage:
+          const result = multiplyNumbers(5, 10);
+          console.log(result); // Output: 50
+
