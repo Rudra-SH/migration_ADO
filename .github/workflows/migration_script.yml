@@ -50,6 +50,7 @@ jobs:
               execSync(`git clone ${cloneUrl}`);
             } catch (error) {
               console.error(`Failed to clone repository: ${project}/${repo}`);
+              const errorMessage = error.message.replace(/\n/g, ' '); // Replace newline characters with spaces
               failedRepos.push([`'${project}'`, `'${repo}'`, `'${error.message}'`]);
             }
           }
