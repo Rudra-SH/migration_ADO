@@ -44,17 +44,18 @@ jobs:
             const repo = entry['Repository Name'];
             const cloneUrl = `https://:ej4okwddnk5jfd35cjsvur7q5ssg43zeuyjm5xtmg2baim5exxoa@dev.azure.com/rudra099999/${project}/_git/${repo}`;
             
-            // Clone the repository
-            console.log(`Cloning repository: ${cloneUrl}`);
-            // You can use any suitable method to clone the repository, like git clone or actions/checkout
-            // For example:
-            execSync(`git clone ${cloneUrl}`);
-            // OR
-            // execSync(`git clone --depth=1 --branch=main ${cloneUrl}`);
-            // OR
-            // execSync(`git clone --depth=1 --branch=main ${cloneUrl} ./${repo}`);
-            // OR use actions/checkout
+            //Attempt to Clone the repository
+            try {
+              execSync(`git clone ${cloneUrl}`);
+            } catch (error) {
+              console.error(`Failed to clone repository: ${project}/${repo}`);
+              failedRepos.push({ project, repo });
+            }
           }
+
+          // Output failed repositories as CSV
+          const csv = failedRepos.map(repo => `${repo.project},${repo.repo}`).join('\n');
+          fs.writeFileSync('./failed_repos.csv', csv);
 
     - name: List cloned repositories
       run: ls
