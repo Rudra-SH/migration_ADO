@@ -27,7 +27,8 @@ jobs:
           // Script for migration all repos form ADO to Github mentioned in excel File.
           const XLSX = require('xlsx');
           const fs = require('fs');
-
+          const { execSync } = require('child_process');
+          
           // Load Excel file
           const workbook = XLSX.readFile('./data/DummyDataToTestADOMigration.xlsx');
           const sheetName = workbook.SheetNames[0];
@@ -47,7 +48,7 @@ jobs:
             console.log(`Cloning repository: ${cloneUrl}`);
             // You can use any suitable method to clone the repository, like git clone or actions/checkout
             // For example:
-            run(`git clone ${cloneUrl}`);
+            execSync(`git clone ${cloneUrl}`);
             // OR
             // execSync(`git clone --depth=1 --branch=main ${cloneUrl}`);
             // OR
