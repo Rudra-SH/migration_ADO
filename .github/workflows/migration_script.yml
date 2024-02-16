@@ -35,7 +35,7 @@ jobs:
 
           // Convert Excel to JSON
           const excelData = XLSX.utils.sheet_to_json(worksheet);
-          console.log(jsonData);
+          console.log(excelData);
 
           // Cloning the repositories
           for (const entry of excelData) {
