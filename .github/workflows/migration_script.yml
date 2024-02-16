@@ -50,14 +50,15 @@ jobs:
               execSync(`git clone ${cloneUrl}`);
             } catch (error) {
               console.error(`Failed to clone repository: ${project}/${repo}`);
-              failedRepos.push({ project, repo });
+              failedRepos.push({ project, repo, error.message});
             }
           }
 
           // Output failed repositories as CSV
-          const csv = failedRepos.map(repo => `${repo.project},${repo.repo}`).join('\n');
-          console.log(csv);
-          fs.writeFileSync('./failed_repos.csv', csv);
+          const csvRows = failedRepos.map(repo => repo.join(','));
+          const csvContent = ['Project Name,Repo Name,Failed Reason', ...csvRows].join('\n');
+          console.log(csvContent);
+          fs.writeFileSync('./failed_repos.csv', csvContent);
 
     - name: List cloned repositories
       run: ls
