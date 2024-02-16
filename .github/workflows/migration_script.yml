@@ -24,15 +24,36 @@ jobs:
       uses: actions/github-script@v6
       with:
         script: |
-         // Script for migration all repos form ADO to Github mentioned in excel File.
-         const XLSX = require('xlsx');
-         const fs = require('fs');
+          // Script for migration all repos form ADO to Github mentioned in excel File.
+          const XLSX = require('xlsx');
+          const fs = require('fs');
 
-         // Load Excel file
-         const workbook = XLSX.readFile('./data/DummyDataToTestADOMigration.xlsx');
-         const sheetName = workbook.SheetNames[0];
-         const worksheet = workbook.Sheets[sheetName];
+          // Load Excel file
+          const workbook = XLSX.readFile('./data/DummyDataToTestADOMigration.xlsx');
+          const sheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[sheetName];
 
-         // Convert Excel to JSON
-         const jsonData = XLSX.utils.sheet_to_json(worksheet);
-         console.log(jsonData);
+          // Convert Excel to JSON
+          const jsonData = XLSX.utils.sheet_to_json(worksheet);
+          console.log(jsonData);
+
+          // Cloning the repositories
+          for (const entry of excelData) {
+            const project = entry['Project Name'];
+            const repo = entry['Repository Name'];
+            const cloneUrl = `https://:ej4okwddnk5jfd35cjsvur7q5ssg43zeuyjm5xtmg2baim5exxoa@dev.azure.com/rudra099999/${project}/_git/${repo}`;
+            
+            // Clone the repository
+            console.log(`Cloning repository: ${cloneUrl}`);
+            // You can use any suitable method to clone the repository, like git clone or actions/checkout
+            // For example:
+            execSync(`git clone ${cloneUrl}`);
+            // OR
+            // execSync(`git clone --depth=1 --branch=main ${cloneUrl}`);
+            // OR
+            // execSync(`git clone --depth=1 --branch=main ${cloneUrl} ./${repo}`);
+            // OR use actions/checkout
+          }
+
+    - name: List cloned repositories
+      run: ls
