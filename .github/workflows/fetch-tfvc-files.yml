@@ -40,19 +40,22 @@ jobs:
                   'Authorization': 'Basic' + btoa(`:${{ secrets.ADO_TOKEN }}`)
                 }
               });
-              response.json().then(data => {
-                console.log(data);
-                // Assuming you want to write the response to a file
-                //fs.writeFileSync('tfvc_projects.json', JSON.stringify(data, null, 2));
-              });
+              if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+              }
+              const data = await response.json();
+              console.log(data);
+              return data;
               //console.log(response.json());
               // Assuming you want to write the response to a file
               //fs.writeFileSync('tfvc_projects.json', JSON.stringify(response.data, null, 2));
             } catch (error) {
               console.log('Inside catch');
               console.error('Error fetching projects:', error);
-              process.exit(1);
+              return -1;
             }
           }
 
-          fetchProjectWithTFVC();
+          const data = fetchProjectWithTFVC();
+          console.log('In Main');
+          console.log(data);
