@@ -21,7 +21,8 @@ jobs:
         npm install xlsx
         npm install axios
 
-    - name: Fetch TFVC Files
+    - name: Fetch TFVC Projects
+      id: fetch-tfvc-projects
       uses: actions/github-script@v6
       with:
         script: |
@@ -29,33 +30,32 @@ jobs:
           //const axios = require('axios');
           //const fs = require('fs');
           
-          async function fetchProjectWithTFVC(){
-            console.log('Inside function');
-            try {
-              console.log('Inside try');
-              const response = await fetch('https://dev.azure.com/rudra099999/_apis/tfvc/items?api-version=7.2-preview.1', {
-                method: 'GET',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': 'Basic' + btoa(`:${{ secrets.ADO_TOKEN }}`)
-                }
-              });
-              if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-              }
-              const data = await response.json();
-              console.log(data);
-              return data;
-              //console.log(response.json());
-              // Assuming you want to write the response to a file
-              //fs.writeFileSync('tfvc_projects.json', JSON.stringify(response.data, null, 2));
-            } catch (error) {
-              console.log('Inside catch');
-              console.error('Error fetching projects:', error);
-              return -1;
+          console.log('Inside try');
+          const response = await fetch('https://dev.azure.com/rudra099999/_apis/tfvc/items?api-version=7.2-preview.1', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Basic' + btoa(`:${{ secrets.ADO_TOKEN }}`)
             }
+          });
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const data = await response.json();
+          console.log(data);
+          core.setOutput('PROJECT_LIST',data);
+          } catch (error) {
+            console.log('Inside catch');
+            console.error('Error fetching projects:', error);
+            core.setOutput('PROJECT_LIST',-1);
           }
 
-          const data = fetchProjectWithTFVC();
-          console.log('In Main');
-          console.log(data);
+    - name: Get TFVC Items
+      id: get-tfvc-items
+      uses: actions/github-script@v6
+      with:
+        script: |
+          //Script to get all TFVC items in a project
+          const project_list = ${{ steps.fetch-tfvc-projects.outputs.PROJECT_LIST }}
+          console.log(projecct_list);
+
