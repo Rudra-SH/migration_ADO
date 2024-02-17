@@ -58,5 +58,6 @@ jobs:
         script: |
           //Script to get all TFVC items in a project
           const project_list = ${{ steps.fetch-tfvc-projects.outputs.PROJECT_LIST }}
-          console.log(projecct_list);
+          console.log(typeof(project_list));
+          console.log(project_list);
 
