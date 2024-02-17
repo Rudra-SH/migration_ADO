@@ -29,11 +29,12 @@ jobs:
           const axios = require('axios');
           const fs = require('fs');
           
-          function fetchProjectWithTFVC(){
+          async function fetchProjectWithTFVC(){
             try {
               const response = await axios.get('https://dev.azure.com/rudra099999/_apis/tfvc/items?api-version=7.2-preview.1', {
                 headers: {
-                  'Authorization': `Basic ${Buffer.from('username:' + process.env.ADO_PAT).toString('base64')}`
+                  'Content-Type': 'application/json'
+                  'Authorization': 'Basic' + btoa(`:${{ secrets.ADO_TOKEN }}`)
                 }
               });
               console.log(response.data);
