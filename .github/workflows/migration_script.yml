@@ -1,7 +1,7 @@
 name: Bulk Migration Script
 
 on:
-  push:
+  workflow_dispatch:
 
 jobs:
   bulk-migration-script:
