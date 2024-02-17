@@ -40,7 +40,12 @@ jobs:
                   'Authorization': 'Basic' + btoa(`:${{ secrets.ADO_TOKEN }}`)
                 }
               });
-              console.log(response.json());
+              response.json().then(data => {
+                console.log(data);
+                // Assuming you want to write the response to a file
+                //fs.writeFileSync('tfvc_projects.json', JSON.stringify(data, null, 2));
+              });
+              //console.log(response.json());
               // Assuming you want to write the response to a file
               //fs.writeFileSync('tfvc_projects.json', JSON.stringify(response.data, null, 2));
             } catch (error) {
