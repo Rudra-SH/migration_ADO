@@ -1,0 +1,48 @@
+name: Fetch TFVC Files
+
+on:
+  push:
+
+jobs:
+  fetch-tfvc-files:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '14'
+
+    - name: Install dependencies
+      run: | 
+        npm install @actions/github
+        npm install xlsx
+        npm install axios
+
+    - name: Fetch TFVC Files
+      uses: actions/github-script@v6
+      with:
+        script: |
+          // Script for TFC files from all projects.
+          const axios = require('axios');
+          const fs = require('fs');
+          
+          function fetchProjectWithTFVC(){
+            try {
+              const response = await axios.get('https://dev.azure.com/rudra099999/_apis/tfvc/items?api-version=7.2-preview.1', {
+                headers: {
+                  'Authorization': `Basic ${Buffer.from('username:' + process.env.ADO_PAT).toString('base64')}`
+                }
+              });
+              console.log(response.data);
+              // Assuming you want to write the response to a file
+              //fs.writeFileSync('tfvc_projects.json', JSON.stringify(response.data, null, 2));
+            } catch (error) {
+              console.error('Error fetching projects:', error);
+              process.exit(1);
+            }
+          }
+
+          fetchProjectWithTFVC();
