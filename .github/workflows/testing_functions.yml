@@ -27,6 +27,7 @@ jobs:
           const fs = require('fs');
           const { execSync } = require('child_process');
           execSync(`mkdir testing_repo`);
+          execSync('cat README.md');
           execSync(`ls`);
           // Script for testing functions in javascript
           function multiplyNumbers(a, b) {
