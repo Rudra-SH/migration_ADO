@@ -28,7 +28,9 @@ jobs:
           const { execSync } = require('child_process');
           execSync(`mkdir testing_repo`);
           execSync('cat README.md');
-          execSync(`ls`);
+          const lsOutput = execSync('ls').toString();
+          core.info('ls output:');
+          core.info(lsOutput);
           execSync('chmod 777 testing_repo');
           execSync(`echo 'Folder created'`);
           // Script for testing functions in javascript
