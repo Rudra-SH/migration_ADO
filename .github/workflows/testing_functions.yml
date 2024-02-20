@@ -30,6 +30,7 @@ jobs:
           execSync('cat README.md');
           execSync(`ls`);
           execSync('chmod 777 testing_repo');
+          execSync(`echo 'Folder created'`);
           // Script for testing functions in javascript
           function multiplyNumbers(a, b) {
               return a * b;
