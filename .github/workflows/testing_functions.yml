@@ -42,5 +42,7 @@ jobs:
           console.log(result); // Output: 13
 
     - name: List cloned repositories
-      run: ls
+      run: |
+        cd .
+        ls
 
