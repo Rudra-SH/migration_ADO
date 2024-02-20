@@ -41,3 +41,6 @@ jobs:
           const result = addNumbers(multiplyNumbers(2,3),7);
           console.log(result); // Output: 13
 
+    - name: List cloned repositories
+      run: ls
+
