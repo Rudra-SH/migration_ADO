@@ -1,7 +1,7 @@
 name: For testing Functions
 
 on:
-  push:
+  workflow_dispatch:
 
 jobs:
   for-testing-functions:
