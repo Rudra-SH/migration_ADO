@@ -39,10 +39,17 @@ jobs:
           const excelData = XLSX.utils.sheet_to_json(worksheet);
           console.log(excelData);
 
+          function isRepoExist(project, repo){
+            const url = `https://${{ secrets.ADO_TOKEN }}@dev.azure.com/rudra099999/${project}/_git/${repo}`;
+            const result = execSync(`git ls-remote ${url}`);
+            console.log(result);
+          }
+
           // Cloning the repositories
           for (const entry of excelData) {
             const project = entry['Project Name'];
             const repo = entry['Repository Name'];
+            isRepoExist(project,repo);
             const cloneUrl = `https://${{ secrets.ADO_TOKEN }}@dev.azure.com/rudra099999/${project}/_git/${repo}`;
             console.log('outside try');
             //Attempt to Clone the repository
