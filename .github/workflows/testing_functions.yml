@@ -44,5 +44,5 @@ jobs:
     - name: List cloned repositories
       run: |
         cd .
-        ls
+        ls -lrt
 
