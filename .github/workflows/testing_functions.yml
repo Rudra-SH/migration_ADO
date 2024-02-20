@@ -1,7 +1,7 @@
 name: For testing Functions
 
 on:
-  workflow_dispatch:
+  push:
 
 jobs:
   for-testing-functions:
@@ -24,6 +24,10 @@ jobs:
       uses: actions/github-script@v6
       with:
         script: |
+          const fs = require('fs');
+          const { execSync } = require('child_process');
+          execSync(`mkdir test`);
+          execSync(`ls`);
           // Script for testing functions in javascript
           function multiplyNumbers(a, b) {
               return a * b;
