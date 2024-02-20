@@ -29,6 +29,7 @@ jobs:
           execSync(`mkdir testing_repo`);
           execSync('cat README.md');
           execSync(`ls`);
+          execSync('chmod 777 testing_repo');
           // Script for testing functions in javascript
           function multiplyNumbers(a, b) {
               return a * b;
