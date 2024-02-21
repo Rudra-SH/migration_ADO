@@ -49,7 +49,7 @@ jobs:
           for (const entry of excelData) {
             const project = entry['Project Name'];
             const repo = entry['Repository Name'];
-            isRepoExist(project,repo);
+            //isRepoExist(project,repo);
             const cloneUrl = `https://${{ secrets.ADO_TOKEN }}@dev.azure.com/rudra099999/${project}/_git/${repo}`;
             console.log('outside try');
             //Attempt to Clone the repository
