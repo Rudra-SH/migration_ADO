@@ -61,6 +61,7 @@ jobs:
               console.log(errorMessage);
               failedRepos.push([`'${project}'`, `'${repo}'`, `'${errorMessage}'`]);
             }
+            execSync(`rm -r ${repo}`);
           }
 
           // Output failed repositories as CSV
