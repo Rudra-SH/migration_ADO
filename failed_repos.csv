@@ -1,2 +1,1 @@
 Project Name,Repo Name,Failed Reason
-'rudra099999','Tes','Command failed: git clone https://wpyc745o7qabzimsfckjuibesqiu3qb4vgg55po23xir57giyp4q@dev.azure.com/rudra099999/rudra099999/_git/Tes Cloning into 'Tes'... remote: TF401019: The Git repository with name or identifier Tes does not exist or you do not have permissions for the operation you are attempting. fatal: repository 'https://dev.azure.com/rudra099999/rudra099999/_git/Tes/' not found '
