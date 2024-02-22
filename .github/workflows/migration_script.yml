@@ -20,10 +20,120 @@ jobs:
         npm install @actions/github
         npm install xlsx
 
+    # - name: Migrate Bulk repos
+    #   uses: actions/github-script@v6
+    #   with:
+    #     script: |
+    #       // Script for migration all repos form ADO to Github mentioned in excel File.
+    #       const XLSX = require('xlsx');
+    #       const fs = require('fs');
+    #       const { execSync } = require('child_process');
+          
+    #       // Load Excel file
+    #       const workbook = XLSX.readFile('./data/DummyDataToTestADOMigration.xlsx');
+    #       const sheetName = workbook.SheetNames[0];
+    #       const worksheet = workbook.Sheets[sheetName];
+    #       const failedRepos = [];
+
+    #       // Convert Excel to JSON
+    #       const excelData = XLSX.utils.sheet_to_json(worksheet);
+    #       console.log(excelData);
+
+    #       /*function isRepoExist(project, repo){
+    #         const url = `https://${{ secrets.ADO_TOKEN }}@dev.azure.com/rudra099999/${project}/_git/${repo}`;
+    #         const result = execSync(`git ls-remote ${url}`);
+    #         console.log(result);
+    #       }*/
+
+    #       // Cloning the repositories
+    #       for (const entry of excelData) {
+    #         const project = entry['Project Name'];
+    #         const repo = entry['Repository Name'];
+    #         //isRepoExist(project,repo);
+    #         const cloneUrl = `https://${{ secrets.ADO_TOKEN }}@dev.azure.com/rudra099999/${project}/_git/${repo}`;
+    #         console.log('outside try');
+    #         //Attempt to Clone the repository
+    #         try {
+    #           execSync(`git clone ${cloneUrl}`);
+    #         } catch (error) {
+    #           console.error(`Failed to clone repository: ${project}/${repo}`);
+    #           const errorMessage = error.message.replace(/(\r\n|\n|\r)/gm, ' '); // Replace newline characters with spaces
+    #           console.log(errorMessage);
+    #           failedRepos.push([`'${project}'`, `'${repo}'`, `'${errorMessage}'`]);
+    #         }
+    #         execSync(`rm -r ${repo}`);
+    #       }
+
+    #       // Output failed repositories as CSV
+    #       const csvRows = failedRepos.map(repo => repo.join(','));
+    #       const csvContent = ['Project Name,Repo Name,Failed Reason', ...csvRows].join('\n');
+    #       console.log(csvContent);
+    #       fs.writeFileSync('./failed_repos.csv', csvContent);
+
     - name: Migrate Bulk repos
       uses: actions/github-script@v6
       with:
         script: |
+          const fs = require('fs');
+
+          // Function to rename Azure DevOps repository
+          async function rename_Repository(organization, project, repoData, personalAccessToken) {
+              const repoName = repoData.Repo;
+              try {
+                  
+                  const newRepoName = `Changed-${repoData.Repo}-name`; // Modify the new repository name as needed
+          
+                  // Fetch repository details to retrieve the repository ID
+                  const getRepoResponse = await fetch(`https://dev.azure.com/${organization}/${project}/_apis/git/repositories/${repoName}?api-version=7.2-preview.1`, {
+                      method: 'GET',
+                      headers: {
+                          'Authorization': `Basic ${Buffer.from(':' + personalAccessToken).toString('base64')}`
+                      }
+                  });
+                  if (!getRepoResponse.ok) {
+                      throw new Error(`Failed to get repository details for '${repoName}': ${getRepoResponse.statusText}`);
+                  }
+                  const repoDetails = await getRepoResponse.json();
+                  const repoId = repoDetails.id;
+          
+                  // Rename repository using PATCH request
+                  const patchRepoResponse = await fetch(`https://dev.azure.com/${organization}/${project}/_apis/git/repositories/${repoId}?api-version=7.2-preview.1`, {
+                      method: 'PATCH',
+                      headers: {
+                          'Authorization': `Basic ${Buffer.from(':' + personalAccessToken).toString('base64')}`,
+                          'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({ name: newRepoName })
+                  });
+                  if (!patchRepoResponse.ok) {
+                      throw new Error(`Failed to rename repository '${repoName}': ${patchRepoResponse.statusText}`);
+                  }
+          
+                  console.log(`Repository '${repoName}' renamed to '${newRepoName}' successfully.`);
+                  return null; // Return null if renaming is successful
+              } catch (error) {
+                  console.error(`Error renaming repository '${repoName}':`, error.message);
+                  return { // Return details of the failed repository renaming
+                      Category: repoData.Category,
+                      GH_ORG: repoData.GH_ORG,
+                      Project: repoData.Project,
+                      Repo: repoData.Repo,
+                      'Default Branch': repoData['Default Branch'],
+                      'Days Since Last Commit': repoData['Days Since Last Commit'],
+                      'Size in MB': repoData['Size in MB'],
+                      'Last Committer': repoData['Last Committer'],
+                      'Failed Reason': error.message
+                  };
+              }
+          }
+          
+          // JSON data containing repository information
+          
+          // Azure DevOps organization and project details
+          const organization = 'rudra099999';
+          const project = 'rudra099999';
+          const personalAccessToken = '6qwaxvkkjq4y6aiknsdxojgiq7jnl4qerkxtstkrmzri7txj3ona';
+
           // Script for migration all repos form ADO to Github mentioned in excel File.
           const XLSX = require('xlsx');
           const fs = require('fs');
@@ -36,39 +146,30 @@ jobs:
           const failedRepos = [];
 
           // Convert Excel to JSON
-          const excelData = XLSX.utils.sheet_to_json(worksheet);
-          console.log(excelData);
+          const jsonData = XLSX.utils.sheet_to_json(worksheet);
+          console.log(jsonData);
+          // Immediately-invoked async function to rename repositories
+          (async () => {
+              // Array to store details of failed repository renamings
+              const failedRepositories = [];
+          
+              // Iterate through JSON data and rename repositories
+              for (const repoData of jsonData) {
+                  const result = await rename_Repository(organization, project, repoData, personalAccessToken);
+                  if (result !== null) {
+                      failedRepositories.push(result); // Add details of failed repository renaming to the array
+                  }
+              }
+          
+              // Write failed repository details to CSV file
+              const csvData = failedRepositories.map(repo => Object.values(repo).join(','));
+              const csvContent = `Category,GH_ORG,Project,Repo,Default Branch,Days Since Last Commit,Size in MB,Last Committer,Failed Reason\n${csvData.join('\n')}`;
+              fs.writeFileSync('failed_repositories.csv', csvContent);
 
-          function isRepoExist(project, repo){
-            const url = `https://${{ secrets.ADO_TOKEN }}@dev.azure.com/rudra099999/${project}/_git/${repo}`;
-            const result = execSync(`git ls-remote ${url}`);
-            console.log(result);
-          }
+                  console.log('Processing complete.');
+              })();
 
-          // Cloning the repositories
-          for (const entry of excelData) {
-            const project = entry['Project Name'];
-            const repo = entry['Repository Name'];
-            //isRepoExist(project,repo);
-            const cloneUrl = `https://${{ secrets.ADO_TOKEN }}@dev.azure.com/rudra099999/${project}/_git/${repo}`;
-            console.log('outside try');
-            //Attempt to Clone the repository
-            try {
-              execSync(`git clone ${cloneUrl}`);
-            } catch (error) {
-              console.error(`Failed to clone repository: ${project}/${repo}`);
-              const errorMessage = error.message.replace(/(\r\n|\n|\r)/gm, ' '); // Replace newline characters with spaces
-              console.log(errorMessage);
-              failedRepos.push([`'${project}'`, `'${repo}'`, `'${errorMessage}'`]);
-            }
-            execSync(`rm -r ${repo}`);
-          }
-
-          // Output failed repositories as CSV
-          const csvRows = failedRepos.map(repo => repo.join(','));
-          const csvContent = ['Project Name,Repo Name,Failed Reason', ...csvRows].join('\n');
-          console.log(csvContent);
-          fs.writeFileSync('./failed_repos.csv', csvContent);
+          
 
     - name: List cloned repositories
       run: ls
@@ -77,6 +178,6 @@ jobs:
       run: |
         git config --global user.email "actions@github.com"
         git config --global user.name "GitHub Actions"
-        git add failed_repos.csv
+        git add failed_repositories.csv
         git commit -m "Add failed repositories CSV"
         git push origin HEAD:main
