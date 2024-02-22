@@ -26,7 +26,7 @@ jobs:
       with:
         script: |
           const execSync = require('child_process').execSync;
-          execSYnc('mkdir ~/.ssh');
+          execSync('mkdir ~/.ssh');
           // import { execSync } from 'child_process';  // replace ^ if using ES modules
           execSync('cat resources/rsa-config-cloud.txt > ~/.ssh/config');
 
