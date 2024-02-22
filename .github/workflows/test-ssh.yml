@@ -38,6 +38,9 @@ jobs:
           console.log(output);
           process.env.GIT_SSH_COMMAND = 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no';
 
+          const exportOutput = execSync('echo $GIT_SSH_COMMAND', { encoding: 'utf-8' });
+          console.log(exportOutput);
+
           //const exportOutput = execSync(`export GIT_SSH_COMMAND='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'`);
           //console.log(exportOutput);
 
