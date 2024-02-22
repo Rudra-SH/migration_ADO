@@ -26,7 +26,7 @@ jobs:
         mkdir ~/.ssh
         cat resources/rsa-config-cloud.txt > ~/.ssh/config
         cat ~/.ssh/config
-        echo "${{ env.adorsaprivatekey }}" > ~/.ssh/id_rsa
+        echo ${{ env.adorsaprivatekey }} > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         cat ~/.ssh/id_rsa
         export GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
