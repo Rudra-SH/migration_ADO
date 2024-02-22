@@ -29,7 +29,7 @@ jobs:
           execSync('mkdir ~/.ssh');
           // import { execSync } from 'child_process';  // replace ^ if using ES modules
           execSync('cat resources/rsa-config-cloud.txt > ~/.ssh/config');
-          const data = execSync('cat ~/.ssh/config')
+          const data = execSync('cat ~/.ssh/config', { encoding: 'utf-8' });
           console.log(data);
           // Write private key to ~/.ssh/id_rsa
           execSync(`echo "${process.env.ADORSAPRIVATEKEY}" > ~/.ssh/id_rsa`);
