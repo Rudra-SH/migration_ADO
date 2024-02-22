@@ -45,7 +45,7 @@ jobs:
           execSync('chmod 600 ~/.ssh/id_rsa');
           
           // Set GIT_SSH_COMMAND environment variable
-          process.env.GIT_SSH_COMMAND = 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no';
+          process.env.GIT_SSH_COMMAND = 'ssh -v -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no';
           
           // Execute git ls-remote command 
           try {
