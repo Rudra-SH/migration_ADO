@@ -1,0 +1,55 @@
+name: Test SSH Connection
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-ssh-connection:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '14'
+
+    - name: Install dependencies
+      run: | 
+        npm install @actions/github
+        npm install xlsx
+        npm install axios
+
+    - name: Test SSH connection
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const { execSync } = require('child_process');
+
+          // Create ~/.ssh directory if it doesn't exist
+          execSync('mkdir -p ~/.ssh');
+          
+          // Copy rsa-config-cloud.txt to ~/.ssh/config
+          execSync('cat resources/rsa-config-cloud.txt > ~/.ssh/config');
+          
+          // Write private key to ~/.ssh/id_rsa
+          execSync(`echo "${secrets.ADO_PRIVATE_KEY}" > ~/.ssh/id_rsa`);
+          
+          // Set permissions for ~/.ssh/id_rsa
+          execSync('chmod 600 ~/.ssh/id_rsa');
+          
+          // Set GIT_SSH_COMMAND environment variable
+          process.env.GIT_SSH_COMMAND = 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no';
+          
+          // Execute git ls-remote command
+          try {
+            const output = execSync('git ls-remote git@ssh.dev.azure.com:v3/rudra099999/rudra099999/rudra_repo');
+            console.log(output.toString());
+          } catch (error) {
+            console.error(error.stderr.toString());
+          }
+
+
+
+          
