@@ -30,7 +30,7 @@ jobs:
         chmod 600 ~/.ssh/id_rsa
         cat ~/.ssh/id_rsa
         export GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
-        git ls-remote git@ssh.dev.azure.com:v3/rudra099999/rudra099999/rudra_repo
+        # git ls-remote git@ssh.dev.azure.com:v3/rudra099999/rudra099999/rudra_repo
 
     # - name: Test SSH connection
     #   uses: actions/github-script@v6
