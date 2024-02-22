@@ -27,38 +27,12 @@ jobs:
         script: |
           const execSync = require('child_process').execSync;
           // import { execSync } from 'child_process';  // replace ^ if using ES modules
-          
-          const list = execSync('ls', { encoding: 'utf-8' });  // the default is 'buffer'
-          console.log('Output was:\n', list);
-
-          // Create ~/.ssh directory if it doesn't exist
-          execSync('mkdir -p ~/.ssh');
-          
-          // Copy rsa-config-cloud.txt to ~/.ssh/config
           execSync('cat resources/rsa-config-cloud.txt > ~/.ssh/config');
-          const output = execSync('cat ~/.ssh/config');
-          console.log(output);
-          
+
           // Write private key to ~/.ssh/id_rsa
-          execSync(`echo "${{ secrets.ADO_PRIVATE_KEY }}" > ~/.ssh/id_rsa`);
-
-          //const output = execSync('cat ~/.ssh/id_rsa');
-          
-          
-          // Set permissions for ~/.ssh/id_rsa
-          execSync('chmod 600 ~/.ssh/id_rsa');
-          
-          // Set GIT_SSH_COMMAND environment variable
-          process.env.GIT_SSH_COMMAND = 'ssh -v -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no';
-          
-          // Execute git ls-remote command 
-          try {
-            const output = execSync('git ls-remote git@ssh.dev.azure.com:v3/rudra099999/rudra099999/rudra_repo');
-            console.log(output.toString());
-          } catch (error) {
-            console.error(error.stderr.toString());
-          }
-
+          execSync(`echo "${process.env.ADORSAPRIVATEKEY}" > ~/.ssh/id_rsa`);
+          const output = execSync('ls -lrt ~/.ssh');
+          console.log(output);
 
 
           
