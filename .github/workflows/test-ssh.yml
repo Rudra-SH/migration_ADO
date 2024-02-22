@@ -42,7 +42,7 @@ jobs:
           // Set GIT_SSH_COMMAND environment variable
           process.env.GIT_SSH_COMMAND = 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no';
           
-          // Execute git ls-remote command
+          // Execute git ls-remote command 
           try {
             const output = execSync('git ls-remote git@ssh.dev.azure.com:v3/rudra099999/rudra099999/rudra_repo');
             console.log(output.toString());
