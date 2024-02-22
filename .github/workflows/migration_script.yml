@@ -136,7 +136,7 @@ jobs:
 
           // Script for migration all repos form ADO to Github mentioned in excel File.
           const XLSX = require('xlsx');
-          const fs = require('fs');
+          //const fs = require('fs');
           const { execSync } = require('child_process');
           
           // Load Excel file
