@@ -37,7 +37,7 @@ jobs:
           const output = execSync('ls -lrt ~/.ssh', { encoding: 'utf-8' }); 
           console.log(output);
 
-          const exportOutput = execSync('export GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"', { encoding: 'utf-8' });
+          const exportOutput = execSync('export GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"');
           console.log(exportOutput);
 
           cont checkOutput = execSync('git ls-remote git@ssh.dev.azure.com:v3/rudra099999/rudra099999/rudra_repo');
