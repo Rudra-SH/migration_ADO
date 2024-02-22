@@ -21,31 +21,41 @@ jobs:
         npm install xlsx
         npm install axios
 
-    - name: Test SSH connection
-      uses: actions/github-script@v6
-      with:
-        script: |
-          const execSync = require('child_process').execSync;
-          execSync('mkdir ~/.ssh');
-          // import { execSync } from 'child_process';  // replace ^ if using ES modules
-          execSync('cat resources/rsa-config-cloud.txt > ~/.ssh/config');
-          const data = execSync('cat ~/.ssh/config', { encoding: 'utf-8' });
-          console.log(data);
-          // Write private key to ~/.ssh/id_rsa
-          execSync(`echo "${process.env.ADORSAPRIVATEKEY}" > ~/.ssh/id_rsa`);
-          execSync('chmod 600 ~/.ssh/id_rsa');
-          const output = execSync('ls -lrt ~/.ssh', { encoding: 'utf-8' }); 
-          console.log(output);
-          process.env.GIT_SSH_COMMAND = 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no';
+    - name: TestSSH connection
+      run : |
+        mkdir ~/.ssh
+        cat resources/rsa-config-cloud.txt > ~/.ssh/config
+        cat ~/.ssh/config
+        echo "${{ env.adorsaprivatekey }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        export GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+        git ls-remote git@ssh.dev.azure.com:v3/rudra099999/rudra099999/rudra_repo
 
-          const exportOutput = execSync('echo $GIT_SSH_COMMAND', { encoding: 'utf-8' });
-          console.log(exportOutput);
+    # - name: Test SSH connection
+    #   uses: actions/github-script@v6
+    #   with:
+    #     script: |
+    #       const execSync = require('child_process').execSync;
+    #       execSync('mkdir ~/.ssh');
+    #       // import { execSync } from 'child_process';  // replace ^ if using ES modules
+    #       execSync('cat resources/rsa-config-cloud.txt > ~/.ssh/config');
+    #       const data = execSync('cat ~/.ssh/config', { encoding: 'utf-8' });
+    #       console.log(data);
+    #       // Write private key to ~/.ssh/id_rsa
+    #       execSync(`echo "${process.env.ADORSAPRIVATEKEY}" > ~/.ssh/id_rsa`);
+    #       execSync('chmod 600 ~/.ssh/id_rsa');
+    #       const output = execSync('ls -lrt ~/.ssh', { encoding: 'utf-8' }); 
+    #       console.log(output);
+    #       process.env.GIT_SSH_COMMAND = 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no';
 
-          //const exportOutput = execSync(`export GIT_SSH_COMMAND='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'`);
-          //console.log(exportOutput);
+    #       const exportOutput = execSync('echo $GIT_SSH_COMMAND', { encoding: 'utf-8' });
+    #       console.log(exportOutput);
 
-          execSync('git ls-remote git@ssh.dev.azure.com:v3/rudra099999/rudra099999/rudra_repo');
-          //console.log(checkOutput);
+    #       //const exportOutput = execSync(`export GIT_SSH_COMMAND='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'`);
+    #       //console.log(exportOutput);
+
+    #       execSync('git ls-remote git@ssh.dev.azure.com:v3/rudra099999/rudra099999/rudra_repo');
+    #       //console.log(checkOutput);
 
           
 
