@@ -25,7 +25,11 @@ jobs:
       uses: actions/github-script@v6
       with:
         script: |
-          const { execSync } = require('child_process');
+          const execSync = require('child_process').execSync;
+          // import { execSync } from 'child_process';  // replace ^ if using ES modules
+          
+          const output = execSync('ls', { encoding: 'utf-8' });  // the default is 'buffer'
+          console.log('Output was:\n', output);
 
           // Create ~/.ssh directory if it doesn't exist
           execSync('mkdir -p ~/.ssh');
