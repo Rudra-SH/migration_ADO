@@ -32,12 +32,14 @@ jobs:
           
           // Copy rsa-config-cloud.txt to ~/.ssh/config
           execSync('cat resources/rsa-config-cloud.txt > ~/.ssh/config');
+          const output = execSync('cat ~/.ssh/config');
+          console.log(output);
           
           // Write private key to ~/.ssh/id_rsa
           execSync(`echo "${{ secrets.ADO_PRIVATE_KEY }}" > ~/.ssh/id_rsa`);
 
-          const output = execSync('cat ~/.ssh/id_rsa');
-          console.log(output);
+          //const output = execSync('cat ~/.ssh/id_rsa');
+          
           
           // Set permissions for ~/.ssh/id_rsa
           execSync('chmod 600 ~/.ssh/id_rsa');
