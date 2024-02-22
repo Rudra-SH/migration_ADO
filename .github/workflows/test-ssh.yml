@@ -33,7 +33,7 @@ jobs:
           console.log(data);
           // Write private key to ~/.ssh/id_rsa
           execSync(`echo "${process.env.ADORSAPRIVATEKEY}" > ~/.ssh/id_rsa`);
-          execSync(chmod 600 ~/.ssh/id_rsa);
+          execSync('chmod 600 ~/.ssh/id_rsa');
           const output = execSync('ls -lrt ~/.ssh', { encoding: 'utf-8' }); 
           console.log(output);
 
