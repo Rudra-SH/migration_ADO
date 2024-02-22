@@ -34,7 +34,7 @@ jobs:
           execSync('cat resources/rsa-config-cloud.txt > ~/.ssh/config');
           
           // Write private key to ~/.ssh/id_rsa
-          execSync(`echo "${secrets.ADO_PRIVATE_KEY}" > ~/.ssh/id_rsa`);
+          execSync(`echo "${{ secrets.ADO_PRIVATE_KEY }}" > ~/.ssh/id_rsa`);
           
           // Set permissions for ~/.ssh/id_rsa
           execSync('chmod 600 ~/.ssh/id_rsa');
