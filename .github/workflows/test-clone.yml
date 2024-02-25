@@ -44,12 +44,13 @@ jobs:
 
           // Create and track branches
           const remoteBranches = execSync('git branch -r | grep -v \'\\->\'', { encoding: 'utf-8' }).split('\n');
-          remoteBranches.forEach(remote => {
+          console.log(remoteBranches);
+          /*remoteBranches.forEach(remote => {
               const branchName = remote.replace('origin/', '');
               if (branchName !== defaultBranch && branchName !== 'main') { // Skip 'main' branch
                   execSync(`git branch --track ${branchName} ${remote}`);
               }
-          });
+          });*/
           console.log(execSync('git branch -a', { encoding: 'utf-8' }));
           //execSync(`echo 'This is a test' > data.txt`);
           //console.log(execSync('ls -lrt', { encoding: 'utf-8' }));
