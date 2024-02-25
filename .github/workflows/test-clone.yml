@@ -30,4 +30,7 @@ jobs:
           console.log(execSync('ls', { encoding: 'utf-8' }));
           process.chdir('rudra_repo');
           console.log(execSync('ls -lrt', { encoding: 'utf-8' }));
+
+          const defaultBranch = execSync('git symbolic-ref HEAD | sed s/refs\\/heads\\///', { encoding: 'utf-8' }).trim();
+          console.log(`Default Branch: ${defaultBranch}`);
         
