@@ -33,6 +33,7 @@ jobs:
         script: |
           const { execSync } = require('child_process');
           execSync(`git clone https://${{ secrets.ADO_TOKEN }}@dev.azure.com/rudra099999/rudra099999/_git/rudra_repo`);
+          console.log(execSync('git branch -a', { encoding: 'utf-8' }));
           console.log(execSync('ls', { encoding: 'utf-8' }));
           process.chdir('rudra_repo');
           console.log(execSync('ls -lrt', { encoding: 'utf-8' }));
@@ -45,9 +46,12 @@ jobs:
 
           // Create and track branches
           const remoteBranches = execSync('git branch -r | grep -v \'\\->\'', { encoding: 'utf-8' }).split('\n');
+          console.log(remoteBranches);
           remoteBranches.forEach(remote => {
               const branchName = remote.replace('origin/', '');
               if (branchName !== defaultBranch && branchName !== 'main') {
+                  console.log(branchName);
+                  console.log(remote);
                   execSync(`git branch --track ${branchName} ${remote}`);
               }
           });
