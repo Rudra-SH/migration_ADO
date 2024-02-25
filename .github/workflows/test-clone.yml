@@ -28,4 +28,6 @@ jobs:
           const { execSync } = require('child_process');
           execSync(`git clone https://${{ secrets.ADO_TOKEN }}@dev.azure.com/rudra099999/rudra099999/_git/rudra_repo`);
           console.log(execSync('ls', { encoding: 'utf-8' }));
+          process.chdir('rudra_repo');
+          console.log(execSync('ls -lrt', { encoding: 'utf-8' }));
         
