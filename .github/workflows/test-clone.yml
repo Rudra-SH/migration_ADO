@@ -46,7 +46,7 @@ jobs:
           const remoteBranches = execSync('git branch -r | grep -v \'\\->\'', { encoding: 'utf-8' }).split('\n');
           remoteBranches.forEach(remote => {
               const branchName = remote.replace('origin/', '');
-              if (branchName !== defaultBranch) {
+              if (branchName !== defaultBranch && branchName !== 'main') { // Skip 'main' branch
                   execSync(`git branch --track ${branchName} ${remote}`);
               }
           });
