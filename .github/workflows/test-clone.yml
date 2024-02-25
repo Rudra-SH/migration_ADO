@@ -21,6 +21,12 @@ jobs:
         npm install nodegit
         npm install child_process
 
+    - name: Set up Git
+      run: |
+        git config --global user.email "rudra099999@gmail.com"
+        git config --global user.name "Rudra Sharans"
+
+
     - name: Test Clone
       uses: actions/github-script@v6
       with:
