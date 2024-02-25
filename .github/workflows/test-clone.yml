@@ -41,20 +41,17 @@ jobs:
           console.log(`Default Branch: ${defaultBranch}`);
 
           console.log(execSync('git remote -v', { encoding: 'utf-8' }));
+          console.log(execSync('git branch -a', { encoding: 'utf-8' }));
 
           // Create and track branches
           const remoteBranches = execSync('git branch -r | grep -v \'\\->\'', { encoding: 'utf-8' }).split('\n');
           remoteBranches.forEach(remote => {
-          const branchName = remote.replace('origin/', '');
-          if (branchName !== defaultBranch) {
-              const localBranches = execSync('git branch', { encoding: 'utf-8' }).split('\n');
-              const existsLocally = localBranches.some(branch => branch.trim() === branchName);
-              if (!existsLocally) {
+              const branchName = remote.replace('origin/', '');
+              if (branchName !== defaultBranch && branchName !== 'main') {
                   execSync(`git branch --track ${branchName} ${remote}`);
               }
-          }
           });
-          console.log(execSync('git branch -a', { encoding: 'utf-8' }));
+          
           //execSync(`echo 'This is a test' > data.txt`);
           //console.log(execSync('ls -lrt', { encoding: 'utf-8' }));
           //console.log(execSync('git status', { encoding: 'utf-8' }));
