@@ -42,6 +42,8 @@ jobs:
 
           console.log(execSync('git remote -v', { encoding: 'utf-8' }));
           execSync('mkdir test_folder');
-          execSync('git add .');
+          console.log(execSync('ls', { encoding: 'utf-8' }));
+          console.log(execSync('git status', { encoding: 'utf-8' }));
+          execSync('git add test_folder');
           execSync(`git commit -m 'Adding testing folder'`);
           execSync('git push');
