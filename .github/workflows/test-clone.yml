@@ -1,0 +1,34 @@
+name: Test Clone
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-clone:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '14'
+
+    - name: Install dependencies
+      run: | 
+        npm install @actions/github
+        npm install axios
+        npm install nodegit
+        npm install child_process
+
+    - name: Test Clone
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const { execSync } = require('child_process');
+          console.log(execSync('mkdir testing'), { encoding: 'utf-8' });
+          console.log(execSync('ls -lrt'), { encoding: 'utf-8' });
+          console.log(execSync('cd testing'), { encoding: 'utf-8' });
+          console.log(execSync('ls -lrt'), { encoding: 'utf-8' });
+        
