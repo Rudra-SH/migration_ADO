@@ -35,6 +35,7 @@ jobs:
           console.log(`Default Branch: ${defaultBranch}`);
 
           console.log(execSync('git remote -v', { encoding: 'utf-8' }));
-          // Add originSSH remote
-          execSync('git remote add origin https://${{ secrets.ADO_TOKEN }}@dev.azure.com/rudra099999/rudra099999/_git/rudra_repo');
-          console.log(execSync('git remote -v', { encoding: 'utf-8' }));
+          execSync('mkdir test_folder');
+          execSync('git add .');
+          execSync(`git commit -m 'Adding testing folder'`);
+          execSync('git push');
