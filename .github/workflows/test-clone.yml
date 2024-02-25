@@ -41,9 +41,9 @@ jobs:
           console.log(`Default Branch: ${defaultBranch}`);
 
           console.log(execSync('git remote -v', { encoding: 'utf-8' }));
-          execSync('mkdir test_folder');
-          console.log(execSync('ls', { encoding: 'utf-8' }));
+          execSync(`echo 'This is a test' > data.txt`);
+          console.log(execSync('ls -lrt', { encoding: 'utf-8' }));
           console.log(execSync('git status', { encoding: 'utf-8' }));
-          execSync('git add test_folder');
+          execSync('git add .');
           execSync(`git commit -m 'Adding testing folder'`);
           execSync('git push');
