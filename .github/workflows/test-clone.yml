@@ -26,7 +26,6 @@ jobs:
       with:
         script: |
           const { execSync } = require('child_process');
-          console.log(execSync('mkdir testing', { encoding: 'utf-8' }));
-          console.log(execSync('ls -lrt', { encoding: 'utf-8' }));
-          console.log(execSync('cd testing && ls -lrt', { encoding: 'utf-8' }));
+          execSync(`https://rudra099999:${{ secrets.ADO_TOKEN }}@dev.azure.com/rudra099999/rudra099999/_git/rudra_repo`);
+          console.log(execSync('ls', { encoding: 'utf-8' }));
         
