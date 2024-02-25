@@ -17,7 +17,6 @@ jobs:
 
     - name: Install dependencies
       run: | 
-        npm install @actions/github
         npm install axios
         npm install nodegit
         npm install child_process
@@ -29,6 +28,5 @@ jobs:
           const { execSync } = require('child_process');
           console.log(execSync('mkdir testing', { encoding: 'utf-8' }));
           console.log(execSync('ls -lrt', { encoding: 'utf-8' }));
-          console.log(execSync('cd testing', { encoding: 'utf-8' }));
-          console.log(execSync('ls -lrt', { encoding: 'utf-8' }));
+          console.log(execSync('cd testing && ls -lrt', { encoding: 'utf-8' }));
         
