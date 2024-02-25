@@ -34,3 +34,7 @@ jobs:
           const defaultBranch = execSync('git symbolic-ref HEAD | sed s#refs/heads/##', { encoding: 'utf-8' }).trim();
           console.log(`Default Branch: ${defaultBranch}`);
 
+          console.log(execSync('git remote -v', { encoding: 'utf-8' }));
+          // Add originSSH remote
+          execSync('git remote add origin https://${{ secrets.ADO_TOKEN }}@dev.azure.com/rudra099999/rudra099999/_git/rudra_repo');
+          console.log(execSync('git remote -v', { encoding: 'utf-8' }));
