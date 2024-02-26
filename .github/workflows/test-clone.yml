@@ -53,6 +53,8 @@ jobs:
                   execSync(`git branch --track ${branchName} ${remote}`);
               }
           });
+
+          console.log(execSync('git branch -a', { encoding: 'utf-8' }));
           
           //execSync(`echo 'This is a test' > data.txt`);
           //console.log(execSync('ls -lrt', { encoding: 'utf-8' }));
