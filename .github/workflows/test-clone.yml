@@ -62,3 +62,6 @@ jobs:
           //execSync('git add .');
           //execSync(`git commit -m 'Adding testing folder'`);
           //execSync('git push');
+
+          execSync('git remote add github https://github.com/Rudra-SH/rudra_repo_2');
+          execSync('git push github --all');
