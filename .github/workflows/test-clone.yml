@@ -64,4 +64,6 @@ jobs:
           //execSync('git push');
 
           //execSync('git remote add github https://github.com/Rudra-SH/rudra_repo_2');
-          execSync(`git push https://${{ secrets.TOKEN_GITHUB }}@github.com/Rudra-SH/rudra_repo_2.git --all`);
+          //execSync(`git push https://${{ secrets.TOKEN_GITHUB }}@github.com/Rudra-SH/rudra_repo_2.git --all`);
+          process.chdir('..');
+          console.log(execSync('pwd', { encoding: 'utf-8' }));
