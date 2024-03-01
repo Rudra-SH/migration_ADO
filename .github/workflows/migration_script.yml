@@ -51,14 +51,17 @@ jobs:
             console.log('outside try');
             //Attempt to Clone the repository
             try {
+              console.log('In try ======================');
               execSync(`git clone ${cloneUrl}`);
             } catch (error) {
               console.error(`Failed to clone repository: ${project}/${repo}`);
               const errorMessage = error.message.replace(/(\r\n|\n|\r)/gm, ' '); // Replace newline characters with spaces
               console.log(errorMessage);
               failedRepos.push([`'${project}'`, `'${repo}'`, `'${errorMessage}'`]);
+              console.log('In catch ======================');
               continue;
             }
+            console.log('After try/catch ======================');
             successRepos.push([`'${project}'`, `'${repo}'`]);
           }
 
