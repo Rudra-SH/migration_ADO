@@ -62,6 +62,7 @@ jobs:
               const errorMessage = error.message.replace(/(\r\n|\n|\r)/gm, ' '); // Replace newline characters with spaces
               console.log(errorMessage);
               failedRepos.push([`'${project}'`, `'${repo}'`, `'${errorMessage}'`]);
+              continue;
             }
             process.chdir('..');
             successRepos.push([`'${project}'`, `'${repo}'`]);
