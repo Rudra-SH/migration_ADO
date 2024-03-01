@@ -78,12 +78,27 @@ jobs:
       uses: actions/github-script@v6
       with:
         script: |
+          const fs = require('fs');
           const failedRepos = ${{ steps.migrate-bulk-repos.outputs.failedRepos }};
           const successRepos = ${{ steps.migrate-bulk-repos.outputs.successRepos }};
 
           console.log(failedRepos);
           console.log('============================================================================================================================');
           console.log(successRepos);
+
+          // Write failed repositories to CSV
+          let failedCsvContent = 'ProjectName,RepoName,Failed Reason\n';
+          failedRepos.forEach(repo => {
+            failedCsvContent += `${repo.projectName},${repo.repoName},${repo.reason}\n`;
+          });
+          fs.writeFileSync('failed-repo.csv', failedCsvContent);
+
+          // Write successful repositories to CSV
+          let successCsvContent = 'ProjectName,RepoName\n';
+          successRepos.forEach(repo => {
+            successCsvContent += `${repo.projectName},${repo.repoName}\n`;
+          });
+          fs.writeFileSync('success-repo.csv', successCsvContent);
 
     # - name: Migrate Bulk repos
     #   uses: actions/github-script@v6
