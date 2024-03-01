@@ -79,7 +79,7 @@ jobs:
       with:
         script: |
           const failedRepos = ${{ steps.migrate-bulk-repos.outputs.failedRepos }};
-          const successRepos = ${{ steps.migrate-bulk-repos.outputs.failedRepos }};
+          const successRepos = ${{ steps.migrate-bulk-repos.outputs.successRepos }};
 
           console.log(failedRepos);
           console.log('============================================================================================================================');
