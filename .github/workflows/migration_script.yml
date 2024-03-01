@@ -59,7 +59,6 @@ jobs:
               failedRepos.push([`'${project}'`, `'${repo}'`, `'${errorMessage}'`]);
               continue;
             }
-            execSync(`rm -r ${repo}`);
             successRepos.push([`'${project}'`, `'${repo}'`]);
           }
 
@@ -80,6 +79,7 @@ jobs:
           const successRepos = ${{ steps.migrate-bulk-repos.outputs.failedRepos }};
 
           console.log(failedRepos);
+          console.log('============================================================================================================================');
           console.log(successRepos);
 
     # - name: Migrate Bulk repos
