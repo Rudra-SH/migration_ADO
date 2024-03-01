@@ -57,12 +57,12 @@ jobs:
               console.error(`Failed to clone repository: ${project}/${repo}`);
               const errorMessage = error.message.replace(/(\r\n|\n|\r)/gm, ' '); // Replace newline characters with spaces
               console.log(errorMessage);
-              failedRepos.push([`'${project}'`, `'${repo}'`, `'${errorMessage}'`]);
+              failedRepos.push({ projectName: project, repoName: repo, reason: errorMessage });
               console.log('In catch ======================');
               continue;
             }
             console.log('After try/catch ======================');
-            successRepos.push([`'${project}'`, `'${repo}'`]);
+            successRepos.push({ projectName: project, repoName: repo });
           }
 
           core.setOutput('failedRepos', failedRepos);
