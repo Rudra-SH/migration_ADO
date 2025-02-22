@@ -20,34 +20,34 @@ jobs:
         npm install @actions/github
         npm install xlsx
 
-    - name: Migrate Bulk repos
-      uses: actions/github-script@v6
-      with:
-        script: |
-          const fs = require('fs');
-          const { execSync } = require('child_process');
-          execSync(`mkdir testing_repo`);
-          execSync('cat README.md');
-          const lsOutput = execSync('ls').toString();
-          core.info('ls output:');
-          core.info(lsOutput);
-          execSync('chmod 777 testing_repo');
-          execSync(`echo 'Folder created'`);
-          // Script for testing functions in javascript
-          function multiplyNumbers(a, b) {
-              return a * b;
-          }
+    # - name: Migrate Bulk repos
+    #   uses: actions/github-script@v6
+    #   with:
+    #     script: |
+    #       const fs = require('fs');
+    #       const { execSync } = require('child_process');
+    #       execSync(`mkdir testing_repo`);
+    #       execSync('cat README.md');
+    #       const lsOutput = execSync('ls').toString();
+    #       core.info('ls output:');
+    #       core.info(lsOutput);
+    #       execSync('chmod 777 testing_repo');
+    #       execSync(`echo 'Folder created'`);
+    #       // Script for testing functions in javascript
+    #       function multiplyNumbers(a, b) {
+    #           return a * b;
+    #       }
 
-          function addNumbers(a, b) {
-            return a + b;
-          }
+    #       function addNumbers(a, b) {
+    #         return a + b;
+    #       }
           
-          // Example usage:
-          const result = addNumbers(multiplyNumbers(2,3),7);
-          console.log(result); // Output: 13
+    #       // Example usage:
+    #       const result = addNumbers(multiplyNumbers(2,3),7);
+    #       console.log(result); // Output: 13
 
     - name: List cloned repositories
       run: |
-        cd .
-        ls -lrt
+        echo ${{ secret.MY_SECRET }}
+        echo "Hello"
 
